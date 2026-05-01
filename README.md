@@ -12,6 +12,7 @@ Educational 3D web app that simulates what the Moon looks like from Earth, and w
 - Zustand
 - Luxon
 - Vitest
+- Wrangler / Cloudflare Workers Assets
 
 ## Development
 
@@ -27,9 +28,35 @@ npm test
 npm run build
 ```
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare Workers Assets
 
-Use these build settings:
+This repository includes `wrangler.jsonc` for Cloudflare Workers Assets with SPA fallback:
+
+```bash
+npm run deploy
+```
+
+If using the Cloudflare dashboard build/deploy pipeline with a deploy command, use:
+
+```text
+Build command: npm run build
+Deploy command: npx wrangler deploy
+Build output directory: dist
+Node version: 22
+```
+
+Do not add a Vite-style `public/_redirects` SPA fallback when deploying with Wrangler Assets; `wrangler.jsonc` already provides:
+
+```jsonc
+"assets": {
+  "directory": "./dist",
+  "not_found_handling": "single-page-application"
+}
+```
+
+## Alternative: Cloudflare Pages only
+
+For a plain Pages static deployment, no Wrangler deploy command is needed:
 
 ```text
 Framework preset: Vite
@@ -37,5 +64,3 @@ Build command: npm run build
 Build output directory: dist
 Node version: 22
 ```
-
-The SPA fallback lives in `public/_redirects` and is copied into `dist/` by Vite.
